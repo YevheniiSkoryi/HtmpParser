@@ -1,6 +1,6 @@
 CREATE DATABASE test_post IF NOT EXIST;
 
-create table if not exists posts
+create table if not exists public.posts
 (
     id    varchar(36) NOT NULL,
     title text NOT NULL,
@@ -9,5 +9,5 @@ create table if not exists posts
 );
 
 
-insert into posts(id, title, body)
+insert into public.posts(id, title, body)
 VALUES ('713221aa-f5c6-4fee-9dcf-f6e191882f83','title','body and i and Body, which is Body but not equals to body.');
