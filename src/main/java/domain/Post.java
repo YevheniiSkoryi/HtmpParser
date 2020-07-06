@@ -1,8 +1,10 @@
 package domain;
 
+import java.util.UUID;
+
 public class Post {
 
-    private Long id;
+    private String id;
     private String title;
     private String body;
 
@@ -11,13 +13,13 @@ public class Post {
         this.body = body;
     }
 
-    public Post(Long id, String title, String body) {
+    public Post(String id, String title, String body) {
         this.id = id;
         this.title = title;
         this.body = body;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -29,7 +31,7 @@ public class Post {
         return body;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

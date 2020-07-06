@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public abstract class AbstractRepository {
+public abstract class PostgresRepository {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/test_post";
     private static final String USERNAME = "postgres";

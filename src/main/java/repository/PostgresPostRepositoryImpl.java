@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class PostRepositoryImpl extends PostRepository {
+public class PostgresPostRepositoryImpl extends PostgresRepository implements PostRepository {
 
     private static final String TABLE_NAME = "posts";
     private static final String COLUMN_ID = "id";
@@ -21,18 +21,18 @@ public class PostRepositoryImpl extends PostRepository {
     private static final String SAVE_SQL = String.format("INSERT INTO %s(%s,%s,%s) VALUES (?, ?, ?);", TABLE_NAME, COLUMN_ID, COLUMN_TITLE, COLUMN_BODY);
 
     @Override
-    public Optional<Post> findById(final Long postId) {
+    public Optional<Post> findById(final String postId) {
         try (Connection connection = openConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_SQL);
 
-            preparedStatement.setLong(1, postId);
+            preparedStatement.setString(1, postId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             connection.commit();
             if (resultSet.next()) {
                 return Optional.of(
                         new Post(
-                                resultSet.getLong(COLUMN_ID),
+                                resultSet.getString(COLUMN_ID),
                                 resultSet.getString(COLUMN_TITLE),
                                 resultSet.getString(COLUMN_BODY)
                         )
@@ -53,7 +53,7 @@ public class PostRepositoryImpl extends PostRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL);
 
             for (Post post : posts) {
-                preparedStatement.setLong(1, post.getId());
+                preparedStatement.setString(1, post.getId());
                 preparedStatement.setString(2, post.getTitle());
                 preparedStatement.setString(3, post.getBody());
                 preparedStatement.addBatch();

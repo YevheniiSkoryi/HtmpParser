@@ -5,9 +5,9 @@ import domain.Post;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class PostRepository extends AbstractRepository {
+public interface PostRepository{
 
-    public abstract Optional<Post> findById(final Long postId);
+      Optional<Post> findById(final String postId);
 
-    public abstract void saveAll(final List<Post> posts);
+      void saveAll(final List<Post> posts);
 }
