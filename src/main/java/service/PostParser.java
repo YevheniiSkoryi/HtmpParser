@@ -41,10 +41,12 @@ public class PostParser implements Parser<Post> {
         HttpEntity entity = execute(client, post);
 
         return handleEntity(entity, document -> {
-            final Elements allPosts = document.body().getElementsByClass(POST_ITEM_CLASS_NAME);
+            final Elements allPosts = document.body()
+                    .getElementsByClass(POST_ITEM_CLASS_NAME);
             final List<String> hrefs = allPosts.stream()
                     .map(e -> {
-                        Element href = e.getElementsByClass(POST_LINK_CLASS_NAME).get(0);
+                        Element href = e.getElementsByClass(POST_LINK_CLASS_NAME)
+                                .get(0);
                         return getLinkOnPost(href);
                     })
                     .limit(COUNT_LIMIT)
@@ -56,7 +58,8 @@ public class PostParser implements Parser<Post> {
                         final HttpEntity postEntity = execute(client, getRequest);
 
                         return handleEntity(postEntity, doc -> {
-                            Elements elements = doc.body().getElementsByClass(POST_BODY_CLASS_NAME);
+                            Elements elements = doc.body()
+                                    .getElementsByClass(POST_BODY_CLASS_NAME);
                             String title = extractTitle(elements);
                             String body = extractBody(elements);
                             return new Post(title, body);
@@ -68,7 +71,7 @@ public class PostParser implements Parser<Post> {
         });
     }
 
-    private static <B> B handleEntity(final HttpEntity entity, Function<Document, B> function) {
+    private <B> B handleEntity(final HttpEntity entity, Function<Document, B> function) {
         try (InputStream inputStream = entity.getContent()) {
             final Document doc = parseInputStream(inputStream);
             return function.apply(doc);
@@ -77,7 +80,7 @@ public class PostParser implements Parser<Post> {
         }
     }
 
-    private static HttpEntity execute(final HttpClient client, final HttpRequestBase request) {
+    private HttpEntity execute(final HttpClient client, final HttpRequestBase request) {
         HttpResponse response;
         try {
             response = client.execute(request);
@@ -87,19 +90,19 @@ public class PostParser implements Parser<Post> {
         return response.getEntity();
     }
 
-    private static String extractBody(final Elements elements) {
+    private String extractBody(final Elements elements) {
         final Elements bodies = elements.get(0).getElementsByTag(BODY_TAG);
         return bodies.stream()
                 .map(Element::text)
                 .collect(Collectors.joining());
     }
 
-    private static String extractTitle(final Elements elements) {
+    private String extractTitle(final Elements elements) {
         final Element titleNode = elements.get(0).getElementsByTag(TITLE_TAG).get(0);
         return titleNode.text();
     }
 
-    private static Document parseInputStream(final InputStream inputStream) {
+    private Document parseInputStream(final InputStream inputStream) {
         final String result;
         try {
             result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
@@ -109,7 +112,7 @@ public class PostParser implements Parser<Post> {
         return Jsoup.parse(result);
     }
 
-    private static String getLinkOnPost(final Element element) {
+    private String getLinkOnPost(final Element element) {
         return element.attr(HREF_ATTRIBUTE_NAME);
     }
 }
