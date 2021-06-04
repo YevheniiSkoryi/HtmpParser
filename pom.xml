@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <apache.version>4.5.12</apache.version>
+        <apache.version>4.5.13</apache.version>
         <java.version>1.8</java.version>
         <jsoup.version>1.13.1</jsoup.version>
         <postgres.version>42.2.5</postgres.version>
